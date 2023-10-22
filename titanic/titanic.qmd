@@ -1,0 +1,199 @@
+---
+title: "Clasificación con el conjunto de datos Titanic"
+author: "Juan Gómez Romero"
+date: "10/15/2023"
+lang: es
+format:
+  html:
+    code-tools: true
+    code-fold: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+
+library(knitr)
+library(tidyverse)
+library(caret)
+library(class)
+library(ggthemes)
+```
+
+Clasificación con el conjunto de datos [titanic](https://www.kaggle.com/c/titanic/).
+
+> El hundimiento del Titanic es una de las tragedias marítimas más conocidas de la historia. El 15 de abril de 1912, durante su viaje inaugural, el Titanic se hundió después de chocar contra un iceberg. En el accidente murieron 1502 personas de las 2224 que habían embarcado, incluyendo pasajeros y tripulación. Una de las razones por las que no se encontraron más supervivientes fue la falta de espacio en los barcos salvavidas. Así, aunque la suerte sin duda sonrió a los supervivientes, también resultaron más favorecidos algunos grupos de personas, como las mujeres, los niños y los pasajeros de la clase superior.
+
+# Lectura de datos
+
+Cargamos el conjunto de datos titanic desde [`train.csv`](https://www.kaggle.com/c/titanic/data).
+
+```{r lectura}
+titanic_raw  <- read_csv('train.csv')
+```
+
+Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.
+
+```{r preprocesamiento}
+titanic_data <- titanic_raw %>% 
+  mutate(Survived = ifelse(Survived == 0, 'No', 'Yes')) %>%
+  mutate_at(c('Sex', 'Survived', 'Pclass'), as.factor) %>%
+  mutate_at(c('Age', 'Parch'), as.integer) %>%
+  select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare) %>%
+  drop_na()
+
+titanic_data
+```
+
+# Análisis exploratorio
+
+## Características
+
+Resumen estadístico básico de los datos: mínimos, máximos, medias, medianas, cuartiles, etc.
+
+```{r resumen}
+summary(titanic_data)
+table(titanic_data$Survived)
+```
+
+Los cuartiles se pueden ver gráficamente también, por ejemplo para `Age` según si sobreviven o no.
+
+```{r cuartiles}
+boxplot(titanic_data$Age ~ titanic_data$Survived)
+```
+
+## Histograma
+
+El histograma sirve para observar la distribución de los valores de una variable (cuáles se repiten y cómo).
+
+```{r histograma}
+ggplot(data = titanic_data) + 
+  geom_histogram(aes(x = Age), binwidth = 5, color = "white", fill = "lightblue")
+```
+
+Podemos observar cómo se comporta la variable `Age` según `Survived`.
+
+```{r histograma1}
+ggplot(titanic_data) +
+  geom_histogram(aes(x = Age, fill = Survived), binwidth = 1) +
+  labs(title = "Titanic survivors", x = "Age", y = "# Passengers", fill = "Survived") +
+  theme_hc() + scale_fill_hc()
+```
+
+O `Sex` según `Survived`.
+
+```{r histograma2}
+ggplot(titanic_data) +
+  geom_histogram(aes(x = Sex, fill = Survived), stat="count") +
+  labs(title = "Titanic survivors", x = "Sex", y = "# Passengers", fill = "Survived") +
+  theme_hc() + scale_fill_fivethirtyeight()
+```
+
+## Densidad
+
+La función de densidad es una versión suavizada (y normalizada) del histograma, útil para datos continuos. Podemos profundizar en la exploración realizada con el histograma.
+
+```{r densidad}
+#| label: fig-densidad
+#| fig-cap: "Diagrama de densidad"
+#| warning: false
+#| 
+ggplot(data = titanic_data) + 
+  geom_density(aes(x = Age, fill = Survived)) +
+  facet_wrap(~ Sex)
+```
+
+La @fig-densidad muestra que el comportamiento de hombres y mujeres es ligeramente diferente. 
+
+# Clasificación con k-NN
+
+## Preprocesamiento
+
+Binarizamos las variables categóricas con [`dummyVars`](https://rdrr.io/cran/caret/man/dummyVars.html). La biblioteca [`dummies`](https://rdrr.io/cran/caret/man/dummyVars.html) no está disponible en CRAN.
+
+```{r binarizar}
+dobj <- dummyVars(~., titanic_data[2:7])
+titanic_binarized <- predict(dobj, titanic_data) %>%
+  as_tibble() %>%
+  mutate(Survived = titanic_data$Survived)
+```
+
+Normalizamos los datos para el cálculo de distancias con [`preProcess`](https://rdrr.io/rforge/caret/man/preProcess.html) .
+
+```{r normalizar}
+sobj <- preProcess(titanic_binarized[c('Age', 'Fare')], method=c("range"))
+titanic_scaled <- predict(sobj, titanic_binarized)
+```
+
+## Particionamiento de datos
+
+Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando [`createDataPartition`](https://rdrr.io/rforge/caret/man/createDataPartition.html) de [`caret`](http://topepo.github.io/caret/).
+
+```{r particionamiento}
+set.seed(0)
+
+trainIndex <- createDataPartition(titanic_scaled$Survived, p = .90, list = FALSE)
+train <- titanic_scaled[trainIndex, ] 
+val   <- titanic_scaled[-trainIndex, ]
+```
+
+## Predicción con k-NN
+
+Podemos aplicar k-NN para clasificar los datos de validación a partir de las instancias de entrenamiento.
+
+```{r knn}
+knn.pred <- knn(train[2:7], val[2:7], train$Survived, k = 5)
+```
+
+## Análisis y validación
+
+### Aciertos con _k_ inicial
+Calculadas las predicciones de los datos de validación, podemos comprobar los aciertos.
+
+```{r validacion}
+table(knn.pred, val$Survived)
+```
+Podemos marcar sobre el gráfico de `Age` vs `Fare` los valores conocidos y las predicciones.
+
+```{r}
+plot_data <- val %>% 
+  mutate(prediction = knn.pred) %>%
+  rename(known = Survived) %>%
+  gather(type, value, prediction, known) %>%
+  mutate(id = row_number())
+
+ggplot(data = plot_data) + 
+  geom_point(aes(x = Age, y = Fare, shape = type, color = value))  +
+  labs(x = "Age", y = "Fare") +
+  scale_colour_manual(values=c("red", "green")) + 
+  scale_shape_manual(values=c(5, 3))
+```
+
+### Modificando _k_
+
+```{r knn k_20}
+knn.pred <- knn(train[2:7], val[2:7], train$Survived, k = 20)
+(t <- table(knn.pred, val$Survived))
+
+error_rate <- (t[1,1] + t[2,2]) / nrow(val)
+```
+
+## Test
+En este caso, disponemos de un conjunto adicional `test.csv`, para el que también podemos calcular predicciones. En este caso no disponemos de las salidas reales, por lo que no podemos calcular los aciertos.
+
+```{r}
+test_raw <- read_csv('test.csv')
+
+test  <- test_raw %>%
+  mutate_at(c('Sex', 'Pclass'), as.factor) %>%
+  mutate_at(c('Age', 'Parch'), as.integer) %>%
+  select(Pclass, Sex, Age, SibSp, Parch, Fare) %>%
+  drop_na() %>%
+  predict(dobj, .) %>%
+  predict(sobj, .) %>%
+  as_tibble()
+
+knn.pred <- knn(train[2:7], test[2:7], train$Survived, k = 5)
+
+knn.pred %>% as_tibble()
+```
+

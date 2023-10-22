@@ -1,0 +1,158 @@
+---
+title: "Clasificación con el conjunto de datos Iris"
+author: "Juan Gómez Romero"
+date: "10/15/2023"
+lang: es
+format:
+  html:
+    code-tools: true
+    code-fold: true
+params:
+  n_bins:
+    value: 10
+  comparar_x:
+    value: "Petal.Length"
+  comparar_y:
+    value: "Petal.Width"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+
+library(knitr)
+library(tidyverse)
+library(datasets)
+library(caret)
+library(class)
+```
+
+Clasificación con el conjunto de datos [iris](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/iris).
+
+> El conjunto de datos *flor Iris* o conjunto de datos *iris* de Fisher es un conjunto de datos multivariante introducido por Ronald Fisher en su artículo de 1936 *The use of multiple measurements in taxonomic problems* (El uso de medidas múltiples en problemas taxonómicos) como un ejemplo de análisis discriminante lineal. El conjunto de datos contiene 50 muestras de cada una de tres especies de Iris (Iris setosa, Iris virginica e Iris versicolor). Se midieron cuatro rasgos de cada muestra: el largo y ancho del sépalo y pétalo, en centímetros. Basado en la combinación de estos cuatro rasgos, Fisher desarrolló un modelo discriminante lineal para distinguir entre una especie y otra (Fuente: [Wikipedia](https://es.wikipedia.org/wiki/Conjunto_de_datos_flor_iris)).
+
+![Especies de la flor iris](iris.png)
+
+# Lectura de datos
+
+Cargamos el conjunto de datos iris desde [`datasets`](https://rdocumentation.org/packages/datasets/versions/3.6.2).
+
+```{r lectura}
+iris_data <- iris
+head(iris_data)
+```
+
+# Análisis exploratorio
+
+## Características
+
+Resumen estadístico básico de los datos: mínimos, máximos, medias, medianas, cuartiles, etc.
+
+```{r resumen}
+summary(iris_data)
+```
+
+Los cuartiles se pueden ver gráficamente también, por ejemplo para `Sepal.Lenght`.
+
+```{r cuartiles}
+boxplot(iris_data$Sepal.Length ~ iris_data$Species)
+```
+
+## Histograma
+
+El histograma sirve para observar la distribución de los valores de una variable (cuáles se repiten y cómo).
+
+```{r histograma}
+ggplot(data = iris_data) + 
+  geom_histogram(aes(x = Sepal.Length), bins = params$n_bins, 
+                 color = "white", fill = "green")
+```
+
+## Densidad
+
+La función de densidad es una versión suavizada del histograma, útil para datos continuos. 
+
+```{r densidad}
+ggplot(data = iris_data) + 
+  geom_density(aes(x = Sepal.Length),
+               color = "white", fill = "lightgray")
+```
+
+## Dispersión
+
+La @fig-dispersion muestra que las clases son claramente separables a partir de las variables de predicción.
+
+```{r dispersion, echo=FALSE}
+#| label: fig-dispersion
+#| fig-cap: "Diagrama de dispersion."
+#| warning: false
+
+ggplot(data = iris_data) + 
+  geom_point(aes(x = .data[[params$comparar_x]], y = .data[[params$comparar_y]], color = Species, shape = Species))  +
+  labs(x = params$comparar_x, y = params$comparar_y) +  
+  scale_color_discrete(name ="Especie", labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) +
+  scale_shape_discrete(name ="Especie", labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica"))
+```
+
+# Clasificación con k-NN
+
+## Preprocesamiento
+
+Normalizamos los datos para el cálculo de distancias con [`preProcess`](https://rdrr.io/rforge/caret/man/preProcess.html) .
+
+```{r normalizar}
+sobj <- preProcess(iris_data[,1:4], method=c("scale"))
+iris_scaled <- predict(sobj, iris_data[1:4]) %>% mutate(Species = iris_data$Species)
+```
+
+## Particionamiento de datos
+
+Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando [`createDataPartition`](https://rdrr.io/rforge/caret/man/createDataPartition.html) de [`caret`](http://topepo.github.io/caret/).
+
+```{r particionamiento}
+set.seed(0)
+
+trainIndex <- createDataPartition(iris_scaled$Species, p = .50, list = FALSE)
+train <- iris_scaled[trainIndex, ] 
+val   <- iris_scaled[-trainIndex, ]
+```
+
+## Predicción con k-NN
+
+Podemos aplicar k-NN para clasificar los datos de validación a partir de las instancias de entrenamiento.
+
+```{r knn}
+knn.pred <- knn(train[1:4], val[1:4], train$Species, k = 5)
+```
+
+## Análisis y validación
+
+Calculadas las predicciones de los datos de validación, podemos comprobar los aciertos.
+
+```{r validacion}
+(t <- table(knn.pred, val$Species))
+```
+
+Y calcular una tasa de acierto.
+
+```{r acierto}
+val_acc_rate <- (t[1,1] + t[2,2] + t[3, 3]) / nrow(val)
+
+print(paste0("% de acierto en validación: ", val_acc_rate))
+```
+
+Podemos marcar sobre el gráfico de `Petal.Lenght` vs `Petal.Width` los valores conocidos y las predicciones.
+
+```{r}
+plot_data <- val %>% 
+  mutate(prediction = knn.pred) %>%
+  rename(known = Species) %>%
+  gather(type, value, prediction, known) %>%
+  mutate(id = row_number())
+
+ggplot(data = plot_data) + 
+  geom_point(aes(x = .data[[params$comparar_x]], y = .data[[params$comparar_y]], shape = type, color = value))  +
+  labs(x = params$comparar_x, y = params$comparar_y) +
+  scale_colour_manual(values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
+  scale_shape_manual(values=c(5, 3))
+```
+

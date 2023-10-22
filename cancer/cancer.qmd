@@ -1,0 +1,250 @@
+---
+title: "Clasificación con el conjunto de datos Breast Cancer"
+author: "Juan Gómez Romero"
+date: "10/15/2023"
+lang: es
+format:
+  html:
+    code-tools: true
+    code-fold: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+
+library(knitr)
+library(tidyverse)
+library(caret)
+library(class)
+library(ggthemes)
+library(corrplot)
+```
+
+Clasificación con el conjunto de datos [cancer](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data).
+
+> El conjunto de datos `cancer` proporciona información de 569 pacientes sobre 30 características de los núcleos celulares obtenidas de una imagen digitalizada de una aspiración con aguja fina (FNA) de una masa mamaria. Para cada paciente, el cáncer fue diagnosticado como maligno o benigno.
+
+# Lectura de datos
+
+Cargamos el conjunto de datos desde [`cancer_dataset.csv`](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data).
+
+```{r lectura}
+cancer_raw  <- read_csv('cancer_dataset.csv')
+```
+
+Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.
+
+```{r preprocesamiento}
+cancer_data <- cancer_raw %>% 
+  mutate(diagnosis = as.factor(diagnosis)) %>%
+  select(-c('id')) %>%
+  drop_na()
+cancer_data
+```
+
+# Análisis exploratorio
+
+## Características
+
+Resumen estadístico básico de los datos: mínimos, máximos, medias, medianas, cuartiles, etc.
+
+```{r resumen}
+summary(cancer_data)
+table(cancer_data$diagnosis)
+```
+
+Los cuartiles se pueden ver gráficamente también, por ejemplo para `radius_mean` según si es benigno o maligno.
+
+```{r cuartiles}
+boxplot(cancer_data$radius_mean ~ cancer_data$diagnosis)
+```
+
+Si transformamos los datos a formato largo, podemos visualizar todos los boxplots. (No están normalizados.)
+
+```{r boxplots}
+plot_data <- cancer_data %>% 
+  pivot_longer(cols = -diagnosis)
+
+ggplot(data = plot_data) + 
+  geom_boxplot(aes(x=name, y=value)) + 
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+
+## Histograma
+
+El histograma sirve para observar la distribución de los valores de una variable (cuáles se repiten y cómo).
+
+```{r histograma}
+ggplot(data = cancer_data) + 
+  geom_histogram(aes(x = radius_mean), binwidth = 1, color = "white", fill = "lightblue")
+```
+
+Podemos observar cómo se comporta la variable `radius_mean` según `diagnosis`.
+
+```{r histograma1}
+ggplot(cancer_data) +
+  geom_histogram(aes(x = radius_mean, fill = diagnosis), binwidth = 1) +
+  labs(title = "Breast cancer diagnosis", x = "Radius (mean)", y = "# Pacientes", fill = "diagnosis") +
+  theme_hc() + scale_fill_hc()
+```
+
+O `radius_worst`` según `diagnosis`.
+
+```{r histograma2}
+ggplot(cancer_data) +
+  geom_histogram(aes(x = smoothness_mean, fill = diagnosis)) +
+  labs(title = "Breast cancer diagnosis", x = "Smoothness (mean)", y = "# Pacientes", fill = "diagnosis") +
+  theme_hc() + scale_fill_fivethirtyeight()
+```
+O todos.
+
+```{r histogramas}
+plot_data <- cancer_data %>% 
+  mutate(across(!diagnosis, scale)) %>%
+  pivot_longer(cols = -diagnosis)
+
+ggplot(data = plot_data) + 
+  geom_histogram(aes(x = value, fill = diagnosis)) +
+  facet_wrap(~name)
+```
+
+## Densidad
+
+La función de densidad es una versión suavizada (y normalizada) del histograma, útil para datos continuos. Podemos profundizar en la exploración realizada con el histograma, por ejemplo como en @fig-densidad.
+
+```{r densidad}
+#| label: fig-densidad
+#| fig-cap: "Diagrama de densidad"
+#| warning: false
+#| 
+ggplot(data = cancer_data) + 
+  geom_density(aes(x = radius_mean, fill = diagnosis)) 
+```
+
+## Diagramas de dispersión
+
+Podemos observar las variables predictoras por pares, para determinar su relación entre sí y respecto a la variable objetivo de predicción.
+
+```{r dispersion}
+ggplot(data = cancer_data) + 
+  geom_point(aes(x = radius_mean, y = smoothness_mean, shape = diagnosis, color = diagnosis))  +
+  labs(x = "radius_mean", y = "smoothness_mean") +
+  scale_colour_manual(values=c("red", "green")) + 
+  scale_shape_manual(values=c(5, 3))
+```
+
+Para orientar este estudio, podemos analizar la correlación de las variables entre sí y respecto del objetivo.
+
+```{r correlación}
+cancer_cor <- cancer_data %>%
+  mutate(diagnosis = ifelse('B', 1, -1))
+cor_matrix <- cor(cancer_cor)
+corrplot(cor_matrix)
+```
+
+# Clasificación con k-NN
+
+Utilizaremos la biblioteca [`knn`](https://www.rdocumentation.org/packages/class/versions/7.3-22/topics/knn 
+).
+
+## Preprocesamiento
+
+Normalizamos los datos para el cálculo de distancias con [`preProcess`](https://rdrr.io/rforge/caret/man/preProcess.html) .
+
+```{r normalizar}
+sobj <- preProcess(cancer_data[2:31], method=c("range"))
+cancer_scaled <- predict(sobj, cancer_data)
+```
+
+## Particionamiento de datos
+
+Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando [`createDataPartition`](https://rdrr.io/rforge/caret/man/createDataPartition.html) de [`caret`](http://topepo.github.io/caret/).
+
+```{r particionamiento}
+set.seed(0)
+
+trainIndex <- createDataPartition(cancer_scaled$diagnosis, p = .50, list = FALSE)
+train <- cancer_scaled[trainIndex, ] 
+val   <- cancer_scaled[-trainIndex, ]
+```
+
+## Predicción con k-NN
+
+Podemos aplicar k-NN para clasificar los datos de validación a partir de las instancias de entrenamiento.
+
+```{r knn}
+knn.pred <- knn(train[2:31], val[2:31], train$diagnosis, k = 5)
+```
+
+## Análisis y validación
+
+### Aciertos con _k_ inicial
+Calculadas las predicciones de los datos de validación, podemos comprobar los aciertos.
+
+```{r validacion}
+(t <- table(knn.pred, val$diagnosis))
+
+val_acc_rate <- sum(diag(t)) / nrow(val)
+
+print(paste0("% de acierto en validación: ", val_acc_rate[1]))
+```
+Podemos marcar sobre el gráfico de `radius_mean` vs `smoothness_mean` los valores conocidos y las predicciones.
+
+```{r}
+plot_data <- val %>% 
+  mutate(prediction = knn.pred) %>%
+  rename(known = diagnosis) %>%
+  gather(type, value, prediction, known)
+
+ggplot(data = plot_data) + 
+  geom_point(aes(x = radius_mean, y = smoothness_mean, shape = type, color = value))  +
+  labs(x = "radius_mean", y = "smoothness_mean") +
+  scale_colour_manual(values=c("red", "green")) + 
+  scale_shape_manual(values=c(5, 3))
+```
+### Modificando _k_
+
+Podemos hacer alguna prueba manual variando los valores de `k`.
+
+```{r knn k_20}
+knn.pred <- knn(train[2:31], val[2:31], train$diagnosis, k = 5)
+(t <- table(knn.pred, val$diagnosis))
+
+val_acc_rate <- sum(diag(t)) / nrow(val)
+
+print(paste0("% de acierto en validación: ", val_acc_rate[1]))
+```
+
+# Clasificación con k-NN (caret)
+
+Alternativamente, podemos usar [`caret`](http://topepo.github.io/caret/) y [`train`](https://rdrr.io/rforge/caret/man/train.html) con el método `knn`.
+
+```{r knn_caret}
+suppressWarnings({
+  knn.model <- train(select(train, -diagnosis),  # same as: train[2:31] 
+                    train$diagnosis,
+                    method="knn", 
+                    metric="Accuracy", 
+                    tuneGrid = expand.grid(.k = 1:15))
+})
+
+knn.model
+```
+```{r knn_caret_val}
+knn.pred.caret <- predict(knn.model, newdata = val %>% select(-diagnosis))
+
+(t <- table(knn.pred.caret, val$diagnosis))
+
+val_acc_rate <- sum(diag(t)) / nrow(val)
+
+print(paste0("% de acierto en validación: ", val_acc_rate[1]))
+```
+# Ejercicio de evaluación continua: experimentar con funciones de distancia de [`philentropy`](https://github.com/drostlab/philentropy).
+
+```{r}
+library(philentropy)
+getDistMethods()
+?distance
+```
+
