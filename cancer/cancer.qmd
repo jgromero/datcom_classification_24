@@ -240,11 +240,47 @@ val_acc_rate <- sum(diag(t)) / nrow(val)
 
 print(paste0("% de acierto en validación: ", val_acc_rate[1]))
 ```
-# Ejercicio de evaluación continua: experimentar con funciones de distancia de [`philentropy`](https://github.com/drostlab/philentropy).
+# Ejercicio de evaluación continua 1: experimentar con funciones de distancia de [`philentropy`](https://github.com/drostlab/philentropy).
 
-```{r}
+```{r ejercicio1}
 library(philentropy)
 getDistMethods()
 ?distance
+```
+
+
+- Crea una función `my_knn` que acepte como parámetro una medida de la biblioteca [`philentropy`](https://github.com/drostlab/philentropy) y aplique _knn_ sobre `test` considerando los datos de `train`. La salida de la función debe ser las predicciones sobre `test`.
+
+```{r ejercicio1_1}
+my_knn <- function(train, train_labels, test, k=1, metric="euclidean") {
+  
+  # ...
+
+}
+```
+
+- Usando el conjunto de datos _cancer_, aplica la función `my_knn` con dos medidas de distancia distintas y varios valores de `k`. Compara los resultados, usando un gráfico de los valores de acierto; por ejemplo, un diagrama de barras o uno de _k vs accuracy_ (Fig 2.17 de las diapositivas).
+
+
+```{r ejercicio1_2}
+
+# ...
+
+```
+
+# Ejercicio de evaluación continua 2: crear y evaluar un modelo con el método [`glm`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) en [`caret`](http://topepo.github.io/caret/).
+
+Sobre los datos de _cancer_, obtén un modelo [`glm`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) realizando las siguientes tareas:
+
+- Divide de nuevo los datos en entrenamiento (80%) y test (20%).
+
+- Entrena el modelo usando el método `glm` de [`caret`](http://topepo.github.io/caret/) y aplicando validación cruzada con 10 particiones.
+
+- Evalúa las predicciones del modelo sobre el conjunto de test.
+
+```{r ejercicio2}
+
+# ...
+
 ```
 

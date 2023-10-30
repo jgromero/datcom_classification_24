@@ -549,8 +549,8 @@ knn.pred.caret   B   M
 </div>
 </div>
 </section>
-<section id="ejercicio-de-evaluación-continua-experimentar-con-funciones-de-distancia-de-philentropy." class="level1">
-<h1>Ejercicio de evaluación continua: experimentar con funciones de distancia de <a href="https://github.com/drostlab/philentropy"><code>philentropy</code></a>.</h1>
+<section id="ejercicio-de-evaluación-continua-1-experimentar-con-funciones-de-distancia-de-philentropy." class="level1">
+<h1>Ejercicio de evaluación continua 1: experimentar con funciones de distancia de <a href="https://github.com/drostlab/philentropy"><code>philentropy</code></a>.</h1>
 <div class="cell">
 <details>
 <summary>Código</summary>
@@ -578,6 +578,43 @@ knn.pred.caret   B   M
 <details>
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>?distance</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li>Crea una función <code>my_knn</code> que acepte como parámetro una medida de la biblioteca <a href="https://github.com/drostlab/philentropy"><code>philentropy</code></a> y aplique <em>knn</em> sobre <code>test</code> considerando los datos de <code>train</code>. La salida de la función debe ser las predicciones sobre <code>test</code>.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>my_knn <span class="ot">&lt;-</span> <span class="cf">function</span>(train, train_labels, test, <span class="at">k=</span><span class="dv">1</span>, <span class="at">metric=</span><span class="st">"euclidean"</span>) {</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ...</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li>Usando el conjunto de datos <em>cancer</em>, aplica la función <code>my_knn</code> con dos medidas de distancia distintas y varios valores de <code>k</code>. Compara los resultados, usando un gráfico de los valores de acierto; por ejemplo, un diagrama de barras o uno de <em>k vs accuracy</em> (Fig 2.17 de las diapositivas).</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="ejercicio-de-evaluación-continua-2-crear-y-evaluar-un-modelo-con-el-método-glm-en-caret." class="level1">
+<h1>Ejercicio de evaluación continua 2: crear y evaluar un modelo con el método <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm"><code>glm</code></a> en <a href="http://topepo.github.io/caret/"><code>caret</code></a>.</h1>
+<p>Sobre los datos de <em>cancer</em>, obtén un modelo <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm"><code>glm</code></a> realizando las siguientes tareas:</p>
+<ul>
+<li><p>Divide de nuevo los datos en entrenamiento (80%) y test (20%).</p></li>
+<li><p>Entrena el modelo usando el método <code>glm</code> de <a href="http://topepo.github.io/caret/"><code>caret</code></a> y aplicando validación cruzada con 10 particiones.</p></li>
+<li><p>Evalúa las predicciones del modelo sobre el conjunto de test.</p></li>
+</ul>
+<div class="cell">
+<details>
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <!-- -->
@@ -870,255 +907,291 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb38" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Clasificación con el conjunto de datos Breast Cancer"</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Juan Gómez Romero"</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "10/15/2023"</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> es</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">message =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(class)</span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>Clasificación con el conjunto de datos <span class="co">[</span><span class="ot">cancer</span><span class="co">](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)</span>.</span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; El conjunto de datos </span><span class="in">`cancer`</span><span class="at"> proporciona información de 569 pacientes sobre 30 características de los núcleos celulares obtenidas de una imagen digitalizada de una aspiración con aguja fina (FNA) de una masa mamaria. Para cada paciente, el cáncer fue diagnosticado como maligno o benigno.</span></span>
-<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a><span class="fu"># Lectura de datos</span></span>
-<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>Cargamos el conjunto de datos desde <span class="co">[</span><span class="ot">`cancer_dataset.csv`</span><span class="co">](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)</span>.</span>
-<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{r lectura}</span></span>
-<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>cancer_raw  <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'cancer_dataset.csv'</span>)</span>
-<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.</span>
-<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r preprocesamiento}</span></span>
-<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>cancer_data <span class="ot">&lt;-</span> cancer_raw <span class="sc">%&gt;%</span> </span>
-<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diagnosis =</span> <span class="fu">as.factor</span>(diagnosis)) <span class="sc">%&gt;%</span></span>
-<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">'id'</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
-<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>cancer_data</span>
-<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a><span class="fu"># Análisis exploratorio</span></span>
-<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Características</span></span>
-<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>Resumen estadístico básico de los datos: mínimos, máximos, medias, medianas, cuartiles, etc.</span>
-<span id="cb38-50"><a href="#cb38-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-51"><a href="#cb38-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r resumen}</span></span>
-<span id="cb38-52"><a href="#cb38-52" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cancer_data)</span>
-<span id="cb38-53"><a href="#cb38-53" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cancer_data<span class="sc">$</span>diagnosis)</span>
-<span id="cb38-54"><a href="#cb38-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-55"><a href="#cb38-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-56"><a href="#cb38-56" aria-hidden="true" tabindex="-1"></a>Los cuartiles se pueden ver gráficamente también, por ejemplo para <span class="in">`radius_mean`</span> según si es benigno o maligno.</span>
-<span id="cb38-57"><a href="#cb38-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-58"><a href="#cb38-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r cuartiles}</span></span>
-<span id="cb38-59"><a href="#cb38-59" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(cancer_data<span class="sc">$</span>radius_mean <span class="sc">~</span> cancer_data<span class="sc">$</span>diagnosis)</span>
-<span id="cb38-60"><a href="#cb38-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-61"><a href="#cb38-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-62"><a href="#cb38-62" aria-hidden="true" tabindex="-1"></a>Si transformamos los datos a formato largo, podemos visualizar todos los boxplots. (No están normalizados.)</span>
-<span id="cb38-63"><a href="#cb38-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-64"><a href="#cb38-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r boxplots}</span></span>
-<span id="cb38-65"><a href="#cb38-65" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> cancer_data <span class="sc">%&gt;%</span> </span>
-<span id="cb38-66"><a href="#cb38-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>diagnosis)</span>
-<span id="cb38-67"><a href="#cb38-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-68"><a href="#cb38-68" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_data) <span class="sc">+</span> </span>
-<span id="cb38-69"><a href="#cb38-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>name, <span class="at">y=</span>value)) <span class="sc">+</span> </span>
-<span id="cb38-70"><a href="#cb38-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span>
-<span id="cb38-71"><a href="#cb38-71" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-72"><a href="#cb38-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-73"><a href="#cb38-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-74"><a href="#cb38-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Histograma</span></span>
-<span id="cb38-75"><a href="#cb38-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-76"><a href="#cb38-76" aria-hidden="true" tabindex="-1"></a>El histograma sirve para observar la distribución de los valores de una variable (cuáles se repiten y cómo).</span>
-<span id="cb38-77"><a href="#cb38-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-78"><a href="#cb38-78" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma}</span></span>
-<span id="cb38-79"><a href="#cb38-79" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cancer_data) <span class="sc">+</span> </span>
-<span id="cb38-80"><a href="#cb38-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean), <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"lightblue"</span>)</span>
-<span id="cb38-81"><a href="#cb38-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-82"><a href="#cb38-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-83"><a href="#cb38-83" aria-hidden="true" tabindex="-1"></a>Podemos observar cómo se comporta la variable <span class="in">`radius_mean`</span> según <span class="in">`diagnosis`</span>.</span>
-<span id="cb38-84"><a href="#cb38-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-85"><a href="#cb38-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma1}</span></span>
-<span id="cb38-86"><a href="#cb38-86" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cancer_data) <span class="sc">+</span></span>
-<span id="cb38-87"><a href="#cb38-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">fill =</span> diagnosis), <span class="at">binwidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb38-88"><a href="#cb38-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Breast cancer diagnosis"</span>, <span class="at">x =</span> <span class="st">"Radius (mean)"</span>, <span class="at">y =</span> <span class="st">"# Pacientes"</span>, <span class="at">fill =</span> <span class="st">"diagnosis"</span>) <span class="sc">+</span></span>
-<span id="cb38-89"><a href="#cb38-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_hc</span>() <span class="sc">+</span> <span class="fu">scale_fill_hc</span>()</span>
-<span id="cb38-90"><a href="#cb38-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-91"><a href="#cb38-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-92"><a href="#cb38-92" aria-hidden="true" tabindex="-1"></a>O `radius_worst`<span class="in">` según `</span>diagnosis`.</span>
-<span id="cb38-93"><a href="#cb38-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-94"><a href="#cb38-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma2}</span></span>
-<span id="cb38-95"><a href="#cb38-95" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cancer_data) <span class="sc">+</span></span>
-<span id="cb38-96"><a href="#cb38-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoothness_mean, <span class="at">fill =</span> diagnosis)) <span class="sc">+</span></span>
-<span id="cb38-97"><a href="#cb38-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Breast cancer diagnosis"</span>, <span class="at">x =</span> <span class="st">"Smoothness (mean)"</span>, <span class="at">y =</span> <span class="st">"# Pacientes"</span>, <span class="at">fill =</span> <span class="st">"diagnosis"</span>) <span class="sc">+</span></span>
-<span id="cb38-98"><a href="#cb38-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_hc</span>() <span class="sc">+</span> <span class="fu">scale_fill_fivethirtyeight</span>()</span>
-<span id="cb38-99"><a href="#cb38-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-100"><a href="#cb38-100" aria-hidden="true" tabindex="-1"></a>O todos.</span>
-<span id="cb38-101"><a href="#cb38-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-102"><a href="#cb38-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histogramas}</span></span>
-<span id="cb38-103"><a href="#cb38-103" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> cancer_data <span class="sc">%&gt;%</span> </span>
-<span id="cb38-104"><a href="#cb38-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">!</span>diagnosis, scale)) <span class="sc">%&gt;%</span></span>
-<span id="cb38-105"><a href="#cb38-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>diagnosis)</span>
-<span id="cb38-106"><a href="#cb38-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-107"><a href="#cb38-107" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_data) <span class="sc">+</span> </span>
-<span id="cb38-108"><a href="#cb38-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> value, <span class="at">fill =</span> diagnosis)) <span class="sc">+</span></span>
-<span id="cb38-109"><a href="#cb38-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span>
-<span id="cb38-110"><a href="#cb38-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-111"><a href="#cb38-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-112"><a href="#cb38-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## Densidad</span></span>
-<span id="cb38-113"><a href="#cb38-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-114"><a href="#cb38-114" aria-hidden="true" tabindex="-1"></a>La función de densidad es una versión suavizada (y normalizada) del histograma, útil para datos continuos. Podemos profundizar en la exploración realizada con el histograma, por ejemplo como en @fig-densidad.</span>
-<span id="cb38-115"><a href="#cb38-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-116"><a href="#cb38-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r densidad}</span></span>
-<span id="cb38-117"><a href="#cb38-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-densidad</span></span>
-<span id="cb38-118"><a href="#cb38-118" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Diagrama de densidad"</span></span>
-<span id="cb38-119"><a href="#cb38-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb38-120"><a href="#cb38-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
-<span id="cb38-121"><a href="#cb38-121" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cancer_data) <span class="sc">+</span> </span>
-<span id="cb38-122"><a href="#cb38-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">fill =</span> diagnosis)) </span>
-<span id="cb38-123"><a href="#cb38-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-124"><a href="#cb38-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-125"><a href="#cb38-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## Diagramas de dispersión</span></span>
-<span id="cb38-126"><a href="#cb38-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-127"><a href="#cb38-127" aria-hidden="true" tabindex="-1"></a>Podemos observar las variables predictoras por pares, para determinar su relación entre sí y respecto a la variable objetivo de predicción.</span>
-<span id="cb38-128"><a href="#cb38-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-129"><a href="#cb38-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r dispersion}</span></span>
-<span id="cb38-130"><a href="#cb38-130" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cancer_data) <span class="sc">+</span> </span>
-<span id="cb38-131"><a href="#cb38-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">y =</span> smoothness_mean, <span class="at">shape =</span> diagnosis, <span class="at">color =</span> diagnosis))  <span class="sc">+</span></span>
-<span id="cb38-132"><a href="#cb38-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"radius_mean"</span>, <span class="at">y =</span> <span class="st">"smoothness_mean"</span>) <span class="sc">+</span></span>
-<span id="cb38-133"><a href="#cb38-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="sc">+</span> </span>
-<span id="cb38-134"><a href="#cb38-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>))</span>
-<span id="cb38-135"><a href="#cb38-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-136"><a href="#cb38-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-137"><a href="#cb38-137" aria-hidden="true" tabindex="-1"></a>Para orientar este estudio, podemos analizar la correlación de las variables entre sí y respecto del objetivo.</span>
-<span id="cb38-138"><a href="#cb38-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-139"><a href="#cb38-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r correlación}</span></span>
-<span id="cb38-140"><a href="#cb38-140" aria-hidden="true" tabindex="-1"></a>cancer_cor <span class="ot">&lt;-</span> cancer_data <span class="sc">%&gt;%</span></span>
-<span id="cb38-141"><a href="#cb38-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diagnosis =</span> <span class="fu">ifelse</span>(<span class="st">'B'</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb38-142"><a href="#cb38-142" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(cancer_cor)</span>
-<span id="cb38-143"><a href="#cb38-143" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix)</span>
-<span id="cb38-144"><a href="#cb38-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-145"><a href="#cb38-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-146"><a href="#cb38-146" aria-hidden="true" tabindex="-1"></a><span class="fu"># Clasificación con k-NN</span></span>
-<span id="cb38-147"><a href="#cb38-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-148"><a href="#cb38-148" aria-hidden="true" tabindex="-1"></a>Utilizaremos la biblioteca <span class="co">[</span><span class="ot">`knn`</span><span class="co">]</span>(https://www.rdocumentation.org/packages/class/versions/7.3-22/topics/knn </span>
-<span id="cb38-149"><a href="#cb38-149" aria-hidden="true" tabindex="-1"></a>).</span>
-<span id="cb38-150"><a href="#cb38-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-151"><a href="#cb38-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preprocesamiento</span></span>
-<span id="cb38-152"><a href="#cb38-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-153"><a href="#cb38-153" aria-hidden="true" tabindex="-1"></a>Normalizamos los datos para el cálculo de distancias con <span class="co">[</span><span class="ot">`preProcess`</span><span class="co">](https://rdrr.io/rforge/caret/man/preProcess.html)</span> .</span>
-<span id="cb38-154"><a href="#cb38-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-155"><a href="#cb38-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r normalizar}</span></span>
-<span id="cb38-156"><a href="#cb38-156" aria-hidden="true" tabindex="-1"></a>sobj <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(cancer_data[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], <span class="at">method=</span><span class="fu">c</span>(<span class="st">"range"</span>))</span>
-<span id="cb38-157"><a href="#cb38-157" aria-hidden="true" tabindex="-1"></a>cancer_scaled <span class="ot">&lt;-</span> <span class="fu">predict</span>(sobj, cancer_data)</span>
-<span id="cb38-158"><a href="#cb38-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-159"><a href="#cb38-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-160"><a href="#cb38-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## Particionamiento de datos</span></span>
-<span id="cb38-161"><a href="#cb38-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-162"><a href="#cb38-162" aria-hidden="true" tabindex="-1"></a>Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando <span class="co">[</span><span class="ot">`createDataPartition`</span><span class="co">](https://rdrr.io/rforge/caret/man/createDataPartition.html)</span> de <span class="co">[</span><span class="ot">`caret`</span><span class="co">](http://topepo.github.io/caret/)</span>.</span>
-<span id="cb38-163"><a href="#cb38-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-164"><a href="#cb38-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r particionamiento}</span></span>
-<span id="cb38-165"><a href="#cb38-165" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
-<span id="cb38-166"><a href="#cb38-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-167"><a href="#cb38-167" aria-hidden="true" tabindex="-1"></a>trainIndex <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(cancer_scaled<span class="sc">$</span>diagnosis, <span class="at">p =</span> .<span class="dv">50</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb38-168"><a href="#cb38-168" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> cancer_scaled[trainIndex, ] </span>
-<span id="cb38-169"><a href="#cb38-169" aria-hidden="true" tabindex="-1"></a>val   <span class="ot">&lt;-</span> cancer_scaled[<span class="sc">-</span>trainIndex, ]</span>
-<span id="cb38-170"><a href="#cb38-170" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-171"><a href="#cb38-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-172"><a href="#cb38-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Predicción con k-NN</span></span>
-<span id="cb38-173"><a href="#cb38-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-174"><a href="#cb38-174" aria-hidden="true" tabindex="-1"></a>Podemos aplicar k-NN para clasificar los datos de validación a partir de las instancias de entrenamiento.</span>
-<span id="cb38-175"><a href="#cb38-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-176"><a href="#cb38-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn}</span></span>
-<span id="cb38-177"><a href="#cb38-177" aria-hidden="true" tabindex="-1"></a>knn.pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(train[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], val[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], train<span class="sc">$</span>diagnosis, <span class="at">k =</span> <span class="dv">5</span>)</span>
-<span id="cb38-178"><a href="#cb38-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-179"><a href="#cb38-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-180"><a href="#cb38-180" aria-hidden="true" tabindex="-1"></a><span class="fu">## Análisis y validación</span></span>
-<span id="cb38-181"><a href="#cb38-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-182"><a href="#cb38-182" aria-hidden="true" tabindex="-1"></a><span class="fu">### Aciertos con _k_ inicial</span></span>
-<span id="cb38-183"><a href="#cb38-183" aria-hidden="true" tabindex="-1"></a>Calculadas las predicciones de los datos de validación, podemos comprobar los aciertos.</span>
-<span id="cb38-184"><a href="#cb38-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-185"><a href="#cb38-185" aria-hidden="true" tabindex="-1"></a><span class="in">```{r validacion}</span></span>
-<span id="cb38-186"><a href="#cb38-186" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">table</span>(knn.pred, val<span class="sc">$</span>diagnosis))</span>
-<span id="cb38-187"><a href="#cb38-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-188"><a href="#cb38-188" aria-hidden="true" tabindex="-1"></a>val_acc_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(t)) <span class="sc">/</span> <span class="fu">nrow</span>(val)</span>
-<span id="cb38-189"><a href="#cb38-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-190"><a href="#cb38-190" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"% de acierto en validación: "</span>, val_acc_rate[<span class="dv">1</span>]))</span>
-<span id="cb38-191"><a href="#cb38-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-192"><a href="#cb38-192" aria-hidden="true" tabindex="-1"></a>Podemos marcar sobre el gráfico de <span class="in">`radius_mean`</span> vs <span class="in">`smoothness_mean`</span> los valores conocidos y las predicciones.</span>
-<span id="cb38-193"><a href="#cb38-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-196"><a href="#cb38-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb38-197"><a href="#cb38-197" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> val <span class="sc">%&gt;%</span> </span>
-<span id="cb38-198"><a href="#cb38-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prediction =</span> knn.pred) <span class="sc">%&gt;%</span></span>
-<span id="cb38-199"><a href="#cb38-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">known =</span> diagnosis) <span class="sc">%&gt;%</span></span>
-<span id="cb38-200"><a href="#cb38-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, value, prediction, known)</span>
-<span id="cb38-201"><a href="#cb38-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-202"><a href="#cb38-202" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_data) <span class="sc">+</span> </span>
-<span id="cb38-203"><a href="#cb38-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">y =</span> smoothness_mean, <span class="at">shape =</span> type, <span class="at">color =</span> value))  <span class="sc">+</span></span>
-<span id="cb38-204"><a href="#cb38-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"radius_mean"</span>, <span class="at">y =</span> <span class="st">"smoothness_mean"</span>) <span class="sc">+</span></span>
-<span id="cb38-205"><a href="#cb38-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="sc">+</span> </span>
-<span id="cb38-206"><a href="#cb38-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>))</span>
-<span id="cb38-207"><a href="#cb38-207" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-208"><a href="#cb38-208" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modificando _k_</span></span>
-<span id="cb38-209"><a href="#cb38-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-210"><a href="#cb38-210" aria-hidden="true" tabindex="-1"></a>Podemos hacer alguna prueba manual variando los valores de <span class="in">`k`</span>.</span>
-<span id="cb38-211"><a href="#cb38-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-212"><a href="#cb38-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn k_20}</span></span>
-<span id="cb38-213"><a href="#cb38-213" aria-hidden="true" tabindex="-1"></a>knn.pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(train[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], val[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], train<span class="sc">$</span>diagnosis, <span class="at">k =</span> <span class="dv">5</span>)</span>
-<span id="cb38-214"><a href="#cb38-214" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">table</span>(knn.pred, val<span class="sc">$</span>diagnosis))</span>
-<span id="cb38-215"><a href="#cb38-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-216"><a href="#cb38-216" aria-hidden="true" tabindex="-1"></a>val_acc_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(t)) <span class="sc">/</span> <span class="fu">nrow</span>(val)</span>
-<span id="cb38-217"><a href="#cb38-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-218"><a href="#cb38-218" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"% de acierto en validación: "</span>, val_acc_rate[<span class="dv">1</span>]))</span>
-<span id="cb38-219"><a href="#cb38-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-220"><a href="#cb38-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-221"><a href="#cb38-221" aria-hidden="true" tabindex="-1"></a><span class="fu"># Clasificación con k-NN (caret)</span></span>
-<span id="cb38-222"><a href="#cb38-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-223"><a href="#cb38-223" aria-hidden="true" tabindex="-1"></a>Alternativamente, podemos usar <span class="co">[</span><span class="ot">`caret`</span><span class="co">](http://topepo.github.io/caret/)</span> y <span class="co">[</span><span class="ot">`train`</span><span class="co">](https://rdrr.io/rforge/caret/man/train.html)</span> con el método <span class="in">`knn`</span>.</span>
-<span id="cb38-224"><a href="#cb38-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-225"><a href="#cb38-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn_caret}</span></span>
-<span id="cb38-226"><a href="#cb38-226" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>({</span>
-<span id="cb38-227"><a href="#cb38-227" aria-hidden="true" tabindex="-1"></a>  knn.model <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="fu">select</span>(train, <span class="sc">-</span>diagnosis),  <span class="co"># same as: train[2:31] </span></span>
-<span id="cb38-228"><a href="#cb38-228" aria-hidden="true" tabindex="-1"></a>                    train<span class="sc">$</span>diagnosis,</span>
-<span id="cb38-229"><a href="#cb38-229" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method=</span><span class="st">"knn"</span>, </span>
-<span id="cb38-230"><a href="#cb38-230" aria-hidden="true" tabindex="-1"></a>                    <span class="at">metric=</span><span class="st">"Accuracy"</span>, </span>
-<span id="cb38-231"><a href="#cb38-231" aria-hidden="true" tabindex="-1"></a>                    <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(<span class="at">.k =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>))</span>
-<span id="cb38-232"><a href="#cb38-232" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb38-233"><a href="#cb38-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-234"><a href="#cb38-234" aria-hidden="true" tabindex="-1"></a>knn.model</span>
-<span id="cb38-235"><a href="#cb38-235" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-236"><a href="#cb38-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn_caret_val}</span></span>
-<span id="cb38-237"><a href="#cb38-237" aria-hidden="true" tabindex="-1"></a>knn.pred.caret <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn.model, <span class="at">newdata =</span> val <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>diagnosis))</span>
-<span id="cb38-238"><a href="#cb38-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-239"><a href="#cb38-239" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">table</span>(knn.pred.caret, val<span class="sc">$</span>diagnosis))</span>
-<span id="cb38-240"><a href="#cb38-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-241"><a href="#cb38-241" aria-hidden="true" tabindex="-1"></a>val_acc_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(t)) <span class="sc">/</span> <span class="fu">nrow</span>(val)</span>
-<span id="cb38-242"><a href="#cb38-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-243"><a href="#cb38-243" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"% de acierto en validación: "</span>, val_acc_rate[<span class="dv">1</span>]))</span>
-<span id="cb38-244"><a href="#cb38-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb38-245"><a href="#cb38-245" aria-hidden="true" tabindex="-1"></a><span class="fu"># Ejercicio de evaluación continua: experimentar con funciones de distancia de [`philentropy`](https://github.com/drostlab/philentropy).</span></span>
-<span id="cb38-246"><a href="#cb38-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-249"><a href="#cb38-249" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb38-250"><a href="#cb38-250" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(philentropy)</span>
-<span id="cb38-251"><a href="#cb38-251" aria-hidden="true" tabindex="-1"></a><span class="fu">getDistMethods</span>()</span>
-<span id="cb38-252"><a href="#cb38-252" aria-hidden="true" tabindex="-1"></a>?distance</span>
-<span id="cb38-253"><a href="#cb38-253" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<div class="sourceCode" id="cb41" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Clasificación con el conjunto de datos Breast Cancer"</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Juan Gómez Romero"</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "10/15/2023"</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> es</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">message =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(class)</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>Clasificación con el conjunto de datos <span class="co">[</span><span class="ot">cancer</span><span class="co">](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)</span>.</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; El conjunto de datos </span><span class="in">`cancer`</span><span class="at"> proporciona información de 569 pacientes sobre 30 características de los núcleos celulares obtenidas de una imagen digitalizada de una aspiración con aguja fina (FNA) de una masa mamaria. Para cada paciente, el cáncer fue diagnosticado como maligno o benigno.</span></span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a><span class="fu"># Lectura de datos</span></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>Cargamos el conjunto de datos desde <span class="co">[</span><span class="ot">`cancer_dataset.csv`</span><span class="co">](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)</span>.</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{r lectura}</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>cancer_raw  <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'cancer_dataset.csv'</span>)</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r preprocesamiento}</span></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>cancer_data <span class="ot">&lt;-</span> cancer_raw <span class="sc">%&gt;%</span> </span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diagnosis =</span> <span class="fu">as.factor</span>(diagnosis)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">'id'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>cancer_data</span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a><span class="fu"># Análisis exploratorio</span></span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Características</span></span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>Resumen estadístico básico de los datos: mínimos, máximos, medias, medianas, cuartiles, etc.</span>
+<span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-51"><a href="#cb41-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r resumen}</span></span>
+<span id="cb41-52"><a href="#cb41-52" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cancer_data)</span>
+<span id="cb41-53"><a href="#cb41-53" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cancer_data<span class="sc">$</span>diagnosis)</span>
+<span id="cb41-54"><a href="#cb41-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-55"><a href="#cb41-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-56"><a href="#cb41-56" aria-hidden="true" tabindex="-1"></a>Los cuartiles se pueden ver gráficamente también, por ejemplo para <span class="in">`radius_mean`</span> según si es benigno o maligno.</span>
+<span id="cb41-57"><a href="#cb41-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-58"><a href="#cb41-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r cuartiles}</span></span>
+<span id="cb41-59"><a href="#cb41-59" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(cancer_data<span class="sc">$</span>radius_mean <span class="sc">~</span> cancer_data<span class="sc">$</span>diagnosis)</span>
+<span id="cb41-60"><a href="#cb41-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-61"><a href="#cb41-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-62"><a href="#cb41-62" aria-hidden="true" tabindex="-1"></a>Si transformamos los datos a formato largo, podemos visualizar todos los boxplots. (No están normalizados.)</span>
+<span id="cb41-63"><a href="#cb41-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-64"><a href="#cb41-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r boxplots}</span></span>
+<span id="cb41-65"><a href="#cb41-65" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> cancer_data <span class="sc">%&gt;%</span> </span>
+<span id="cb41-66"><a href="#cb41-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>diagnosis)</span>
+<span id="cb41-67"><a href="#cb41-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-68"><a href="#cb41-68" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_data) <span class="sc">+</span> </span>
+<span id="cb41-69"><a href="#cb41-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>name, <span class="at">y=</span>value)) <span class="sc">+</span> </span>
+<span id="cb41-70"><a href="#cb41-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span>
+<span id="cb41-71"><a href="#cb41-71" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-72"><a href="#cb41-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-73"><a href="#cb41-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-74"><a href="#cb41-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Histograma</span></span>
+<span id="cb41-75"><a href="#cb41-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-76"><a href="#cb41-76" aria-hidden="true" tabindex="-1"></a>El histograma sirve para observar la distribución de los valores de una variable (cuáles se repiten y cómo).</span>
+<span id="cb41-77"><a href="#cb41-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-78"><a href="#cb41-78" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma}</span></span>
+<span id="cb41-79"><a href="#cb41-79" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cancer_data) <span class="sc">+</span> </span>
+<span id="cb41-80"><a href="#cb41-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean), <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"lightblue"</span>)</span>
+<span id="cb41-81"><a href="#cb41-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-82"><a href="#cb41-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-83"><a href="#cb41-83" aria-hidden="true" tabindex="-1"></a>Podemos observar cómo se comporta la variable <span class="in">`radius_mean`</span> según <span class="in">`diagnosis`</span>.</span>
+<span id="cb41-84"><a href="#cb41-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-85"><a href="#cb41-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma1}</span></span>
+<span id="cb41-86"><a href="#cb41-86" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cancer_data) <span class="sc">+</span></span>
+<span id="cb41-87"><a href="#cb41-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">fill =</span> diagnosis), <span class="at">binwidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb41-88"><a href="#cb41-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Breast cancer diagnosis"</span>, <span class="at">x =</span> <span class="st">"Radius (mean)"</span>, <span class="at">y =</span> <span class="st">"# Pacientes"</span>, <span class="at">fill =</span> <span class="st">"diagnosis"</span>) <span class="sc">+</span></span>
+<span id="cb41-89"><a href="#cb41-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_hc</span>() <span class="sc">+</span> <span class="fu">scale_fill_hc</span>()</span>
+<span id="cb41-90"><a href="#cb41-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-91"><a href="#cb41-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-92"><a href="#cb41-92" aria-hidden="true" tabindex="-1"></a>O `radius_worst`<span class="in">` según `</span>diagnosis`.</span>
+<span id="cb41-93"><a href="#cb41-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-94"><a href="#cb41-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma2}</span></span>
+<span id="cb41-95"><a href="#cb41-95" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cancer_data) <span class="sc">+</span></span>
+<span id="cb41-96"><a href="#cb41-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoothness_mean, <span class="at">fill =</span> diagnosis)) <span class="sc">+</span></span>
+<span id="cb41-97"><a href="#cb41-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Breast cancer diagnosis"</span>, <span class="at">x =</span> <span class="st">"Smoothness (mean)"</span>, <span class="at">y =</span> <span class="st">"# Pacientes"</span>, <span class="at">fill =</span> <span class="st">"diagnosis"</span>) <span class="sc">+</span></span>
+<span id="cb41-98"><a href="#cb41-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_hc</span>() <span class="sc">+</span> <span class="fu">scale_fill_fivethirtyeight</span>()</span>
+<span id="cb41-99"><a href="#cb41-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-100"><a href="#cb41-100" aria-hidden="true" tabindex="-1"></a>O todos.</span>
+<span id="cb41-101"><a href="#cb41-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-102"><a href="#cb41-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histogramas}</span></span>
+<span id="cb41-103"><a href="#cb41-103" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> cancer_data <span class="sc">%&gt;%</span> </span>
+<span id="cb41-104"><a href="#cb41-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">!</span>diagnosis, scale)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-105"><a href="#cb41-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>diagnosis)</span>
+<span id="cb41-106"><a href="#cb41-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-107"><a href="#cb41-107" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_data) <span class="sc">+</span> </span>
+<span id="cb41-108"><a href="#cb41-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> value, <span class="at">fill =</span> diagnosis)) <span class="sc">+</span></span>
+<span id="cb41-109"><a href="#cb41-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span>
+<span id="cb41-110"><a href="#cb41-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-111"><a href="#cb41-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-112"><a href="#cb41-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## Densidad</span></span>
+<span id="cb41-113"><a href="#cb41-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-114"><a href="#cb41-114" aria-hidden="true" tabindex="-1"></a>La función de densidad es una versión suavizada (y normalizada) del histograma, útil para datos continuos. Podemos profundizar en la exploración realizada con el histograma, por ejemplo como en @fig-densidad.</span>
+<span id="cb41-115"><a href="#cb41-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-116"><a href="#cb41-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r densidad}</span></span>
+<span id="cb41-117"><a href="#cb41-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-densidad</span></span>
+<span id="cb41-118"><a href="#cb41-118" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Diagrama de densidad"</span></span>
+<span id="cb41-119"><a href="#cb41-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb41-120"><a href="#cb41-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb41-121"><a href="#cb41-121" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cancer_data) <span class="sc">+</span> </span>
+<span id="cb41-122"><a href="#cb41-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">fill =</span> diagnosis)) </span>
+<span id="cb41-123"><a href="#cb41-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-124"><a href="#cb41-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-125"><a href="#cb41-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## Diagramas de dispersión</span></span>
+<span id="cb41-126"><a href="#cb41-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-127"><a href="#cb41-127" aria-hidden="true" tabindex="-1"></a>Podemos observar las variables predictoras por pares, para determinar su relación entre sí y respecto a la variable objetivo de predicción.</span>
+<span id="cb41-128"><a href="#cb41-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-129"><a href="#cb41-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r dispersion}</span></span>
+<span id="cb41-130"><a href="#cb41-130" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cancer_data) <span class="sc">+</span> </span>
+<span id="cb41-131"><a href="#cb41-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">y =</span> smoothness_mean, <span class="at">shape =</span> diagnosis, <span class="at">color =</span> diagnosis))  <span class="sc">+</span></span>
+<span id="cb41-132"><a href="#cb41-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"radius_mean"</span>, <span class="at">y =</span> <span class="st">"smoothness_mean"</span>) <span class="sc">+</span></span>
+<span id="cb41-133"><a href="#cb41-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="sc">+</span> </span>
+<span id="cb41-134"><a href="#cb41-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>))</span>
+<span id="cb41-135"><a href="#cb41-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-136"><a href="#cb41-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-137"><a href="#cb41-137" aria-hidden="true" tabindex="-1"></a>Para orientar este estudio, podemos analizar la correlación de las variables entre sí y respecto del objetivo.</span>
+<span id="cb41-138"><a href="#cb41-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-139"><a href="#cb41-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r correlación}</span></span>
+<span id="cb41-140"><a href="#cb41-140" aria-hidden="true" tabindex="-1"></a>cancer_cor <span class="ot">&lt;-</span> cancer_data <span class="sc">%&gt;%</span></span>
+<span id="cb41-141"><a href="#cb41-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diagnosis =</span> <span class="fu">ifelse</span>(<span class="st">'B'</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb41-142"><a href="#cb41-142" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(cancer_cor)</span>
+<span id="cb41-143"><a href="#cb41-143" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix)</span>
+<span id="cb41-144"><a href="#cb41-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-145"><a href="#cb41-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-146"><a href="#cb41-146" aria-hidden="true" tabindex="-1"></a><span class="fu"># Clasificación con k-NN</span></span>
+<span id="cb41-147"><a href="#cb41-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-148"><a href="#cb41-148" aria-hidden="true" tabindex="-1"></a>Utilizaremos la biblioteca <span class="co">[</span><span class="ot">`knn`</span><span class="co">]</span>(https://www.rdocumentation.org/packages/class/versions/7.3-22/topics/knn </span>
+<span id="cb41-149"><a href="#cb41-149" aria-hidden="true" tabindex="-1"></a>).</span>
+<span id="cb41-150"><a href="#cb41-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-151"><a href="#cb41-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preprocesamiento</span></span>
+<span id="cb41-152"><a href="#cb41-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-153"><a href="#cb41-153" aria-hidden="true" tabindex="-1"></a>Normalizamos los datos para el cálculo de distancias con <span class="co">[</span><span class="ot">`preProcess`</span><span class="co">](https://rdrr.io/rforge/caret/man/preProcess.html)</span> .</span>
+<span id="cb41-154"><a href="#cb41-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-155"><a href="#cb41-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r normalizar}</span></span>
+<span id="cb41-156"><a href="#cb41-156" aria-hidden="true" tabindex="-1"></a>sobj <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(cancer_data[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], <span class="at">method=</span><span class="fu">c</span>(<span class="st">"range"</span>))</span>
+<span id="cb41-157"><a href="#cb41-157" aria-hidden="true" tabindex="-1"></a>cancer_scaled <span class="ot">&lt;-</span> <span class="fu">predict</span>(sobj, cancer_data)</span>
+<span id="cb41-158"><a href="#cb41-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-159"><a href="#cb41-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-160"><a href="#cb41-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## Particionamiento de datos</span></span>
+<span id="cb41-161"><a href="#cb41-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-162"><a href="#cb41-162" aria-hidden="true" tabindex="-1"></a>Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando <span class="co">[</span><span class="ot">`createDataPartition`</span><span class="co">](https://rdrr.io/rforge/caret/man/createDataPartition.html)</span> de <span class="co">[</span><span class="ot">`caret`</span><span class="co">](http://topepo.github.io/caret/)</span>.</span>
+<span id="cb41-163"><a href="#cb41-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-164"><a href="#cb41-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r particionamiento}</span></span>
+<span id="cb41-165"><a href="#cb41-165" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb41-166"><a href="#cb41-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-167"><a href="#cb41-167" aria-hidden="true" tabindex="-1"></a>trainIndex <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(cancer_scaled<span class="sc">$</span>diagnosis, <span class="at">p =</span> .<span class="dv">50</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb41-168"><a href="#cb41-168" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> cancer_scaled[trainIndex, ] </span>
+<span id="cb41-169"><a href="#cb41-169" aria-hidden="true" tabindex="-1"></a>val   <span class="ot">&lt;-</span> cancer_scaled[<span class="sc">-</span>trainIndex, ]</span>
+<span id="cb41-170"><a href="#cb41-170" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-171"><a href="#cb41-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-172"><a href="#cb41-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Predicción con k-NN</span></span>
+<span id="cb41-173"><a href="#cb41-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-174"><a href="#cb41-174" aria-hidden="true" tabindex="-1"></a>Podemos aplicar k-NN para clasificar los datos de validación a partir de las instancias de entrenamiento.</span>
+<span id="cb41-175"><a href="#cb41-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-176"><a href="#cb41-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn}</span></span>
+<span id="cb41-177"><a href="#cb41-177" aria-hidden="true" tabindex="-1"></a>knn.pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(train[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], val[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], train<span class="sc">$</span>diagnosis, <span class="at">k =</span> <span class="dv">5</span>)</span>
+<span id="cb41-178"><a href="#cb41-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-179"><a href="#cb41-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-180"><a href="#cb41-180" aria-hidden="true" tabindex="-1"></a><span class="fu">## Análisis y validación</span></span>
+<span id="cb41-181"><a href="#cb41-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-182"><a href="#cb41-182" aria-hidden="true" tabindex="-1"></a><span class="fu">### Aciertos con _k_ inicial</span></span>
+<span id="cb41-183"><a href="#cb41-183" aria-hidden="true" tabindex="-1"></a>Calculadas las predicciones de los datos de validación, podemos comprobar los aciertos.</span>
+<span id="cb41-184"><a href="#cb41-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-185"><a href="#cb41-185" aria-hidden="true" tabindex="-1"></a><span class="in">```{r validacion}</span></span>
+<span id="cb41-186"><a href="#cb41-186" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">table</span>(knn.pred, val<span class="sc">$</span>diagnosis))</span>
+<span id="cb41-187"><a href="#cb41-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-188"><a href="#cb41-188" aria-hidden="true" tabindex="-1"></a>val_acc_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(t)) <span class="sc">/</span> <span class="fu">nrow</span>(val)</span>
+<span id="cb41-189"><a href="#cb41-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-190"><a href="#cb41-190" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"% de acierto en validación: "</span>, val_acc_rate[<span class="dv">1</span>]))</span>
+<span id="cb41-191"><a href="#cb41-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-192"><a href="#cb41-192" aria-hidden="true" tabindex="-1"></a>Podemos marcar sobre el gráfico de <span class="in">`radius_mean`</span> vs <span class="in">`smoothness_mean`</span> los valores conocidos y las predicciones.</span>
+<span id="cb41-193"><a href="#cb41-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-196"><a href="#cb41-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb41-197"><a href="#cb41-197" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> val <span class="sc">%&gt;%</span> </span>
+<span id="cb41-198"><a href="#cb41-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prediction =</span> knn.pred) <span class="sc">%&gt;%</span></span>
+<span id="cb41-199"><a href="#cb41-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">known =</span> diagnosis) <span class="sc">%&gt;%</span></span>
+<span id="cb41-200"><a href="#cb41-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, value, prediction, known)</span>
+<span id="cb41-201"><a href="#cb41-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-202"><a href="#cb41-202" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_data) <span class="sc">+</span> </span>
+<span id="cb41-203"><a href="#cb41-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> radius_mean, <span class="at">y =</span> smoothness_mean, <span class="at">shape =</span> type, <span class="at">color =</span> value))  <span class="sc">+</span></span>
+<span id="cb41-204"><a href="#cb41-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"radius_mean"</span>, <span class="at">y =</span> <span class="st">"smoothness_mean"</span>) <span class="sc">+</span></span>
+<span id="cb41-205"><a href="#cb41-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="sc">+</span> </span>
+<span id="cb41-206"><a href="#cb41-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>))</span>
+<span id="cb41-207"><a href="#cb41-207" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-208"><a href="#cb41-208" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modificando _k_</span></span>
+<span id="cb41-209"><a href="#cb41-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-210"><a href="#cb41-210" aria-hidden="true" tabindex="-1"></a>Podemos hacer alguna prueba manual variando los valores de <span class="in">`k`</span>.</span>
+<span id="cb41-211"><a href="#cb41-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-212"><a href="#cb41-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn k_20}</span></span>
+<span id="cb41-213"><a href="#cb41-213" aria-hidden="true" tabindex="-1"></a>knn.pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(train[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], val[<span class="dv">2</span><span class="sc">:</span><span class="dv">31</span>], train<span class="sc">$</span>diagnosis, <span class="at">k =</span> <span class="dv">5</span>)</span>
+<span id="cb41-214"><a href="#cb41-214" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">table</span>(knn.pred, val<span class="sc">$</span>diagnosis))</span>
+<span id="cb41-215"><a href="#cb41-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-216"><a href="#cb41-216" aria-hidden="true" tabindex="-1"></a>val_acc_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(t)) <span class="sc">/</span> <span class="fu">nrow</span>(val)</span>
+<span id="cb41-217"><a href="#cb41-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-218"><a href="#cb41-218" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"% de acierto en validación: "</span>, val_acc_rate[<span class="dv">1</span>]))</span>
+<span id="cb41-219"><a href="#cb41-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-220"><a href="#cb41-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-221"><a href="#cb41-221" aria-hidden="true" tabindex="-1"></a><span class="fu"># Clasificación con k-NN (caret)</span></span>
+<span id="cb41-222"><a href="#cb41-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-223"><a href="#cb41-223" aria-hidden="true" tabindex="-1"></a>Alternativamente, podemos usar <span class="co">[</span><span class="ot">`caret`</span><span class="co">](http://topepo.github.io/caret/)</span> y <span class="co">[</span><span class="ot">`train`</span><span class="co">](https://rdrr.io/rforge/caret/man/train.html)</span> con el método <span class="in">`knn`</span>.</span>
+<span id="cb41-224"><a href="#cb41-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-225"><a href="#cb41-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn_caret}</span></span>
+<span id="cb41-226"><a href="#cb41-226" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>({</span>
+<span id="cb41-227"><a href="#cb41-227" aria-hidden="true" tabindex="-1"></a>  knn.model <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="fu">select</span>(train, <span class="sc">-</span>diagnosis),  <span class="co"># same as: train[2:31] </span></span>
+<span id="cb41-228"><a href="#cb41-228" aria-hidden="true" tabindex="-1"></a>                    train<span class="sc">$</span>diagnosis,</span>
+<span id="cb41-229"><a href="#cb41-229" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method=</span><span class="st">"knn"</span>, </span>
+<span id="cb41-230"><a href="#cb41-230" aria-hidden="true" tabindex="-1"></a>                    <span class="at">metric=</span><span class="st">"Accuracy"</span>, </span>
+<span id="cb41-231"><a href="#cb41-231" aria-hidden="true" tabindex="-1"></a>                    <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(<span class="at">.k =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>))</span>
+<span id="cb41-232"><a href="#cb41-232" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb41-233"><a href="#cb41-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-234"><a href="#cb41-234" aria-hidden="true" tabindex="-1"></a>knn.model</span>
+<span id="cb41-235"><a href="#cb41-235" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-236"><a href="#cb41-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r knn_caret_val}</span></span>
+<span id="cb41-237"><a href="#cb41-237" aria-hidden="true" tabindex="-1"></a>knn.pred.caret <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn.model, <span class="at">newdata =</span> val <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>diagnosis))</span>
+<span id="cb41-238"><a href="#cb41-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-239"><a href="#cb41-239" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">table</span>(knn.pred.caret, val<span class="sc">$</span>diagnosis))</span>
+<span id="cb41-240"><a href="#cb41-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-241"><a href="#cb41-241" aria-hidden="true" tabindex="-1"></a>val_acc_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(t)) <span class="sc">/</span> <span class="fu">nrow</span>(val)</span>
+<span id="cb41-242"><a href="#cb41-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-243"><a href="#cb41-243" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"% de acierto en validación: "</span>, val_acc_rate[<span class="dv">1</span>]))</span>
+<span id="cb41-244"><a href="#cb41-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-245"><a href="#cb41-245" aria-hidden="true" tabindex="-1"></a><span class="fu"># Ejercicio de evaluación continua 1: experimentar con funciones de distancia de [`philentropy`](https://github.com/drostlab/philentropy).</span></span>
+<span id="cb41-246"><a href="#cb41-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-247"><a href="#cb41-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ejercicio1}</span></span>
+<span id="cb41-248"><a href="#cb41-248" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(philentropy)</span>
+<span id="cb41-249"><a href="#cb41-249" aria-hidden="true" tabindex="-1"></a><span class="fu">getDistMethods</span>()</span>
+<span id="cb41-250"><a href="#cb41-250" aria-hidden="true" tabindex="-1"></a>?distance</span>
+<span id="cb41-251"><a href="#cb41-251" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-252"><a href="#cb41-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-253"><a href="#cb41-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-254"><a href="#cb41-254" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Crea una función <span class="in">`my_knn`</span> que acepte como parámetro una medida de la biblioteca <span class="co">[</span><span class="ot">`philentropy`</span><span class="co">](https://github.com/drostlab/philentropy)</span> y aplique _knn_ sobre <span class="in">`test`</span> considerando los datos de <span class="in">`train`</span>. La salida de la función debe ser las predicciones sobre <span class="in">`test`</span>.</span>
+<span id="cb41-255"><a href="#cb41-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-256"><a href="#cb41-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ejercicio1_1}</span></span>
+<span id="cb41-257"><a href="#cb41-257" aria-hidden="true" tabindex="-1"></a>my_knn <span class="ot">&lt;-</span> <span class="cf">function</span>(train, train_labels, test, <span class="at">k=</span><span class="dv">1</span>, <span class="at">metric=</span><span class="st">"euclidean"</span>) {</span>
+<span id="cb41-258"><a href="#cb41-258" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-259"><a href="#cb41-259" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ...</span></span>
+<span id="cb41-260"><a href="#cb41-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-261"><a href="#cb41-261" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-262"><a href="#cb41-262" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-263"><a href="#cb41-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-264"><a href="#cb41-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Usando el conjunto de datos _cancer_, aplica la función `my_knn` con dos medidas de distancia distintas y varios valores de `k`. Compara los resultados, usando un gráfico de los valores de acierto; por ejemplo, un diagrama de barras o uno de _k vs accuracy_ (Fig 2.17 de las diapositivas).</span>
+<span id="cb41-265"><a href="#cb41-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-266"><a href="#cb41-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-267"><a href="#cb41-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ejercicio1_2}</span></span>
+<span id="cb41-268"><a href="#cb41-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-269"><a href="#cb41-269" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb41-270"><a href="#cb41-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-271"><a href="#cb41-271" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-272"><a href="#cb41-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-273"><a href="#cb41-273" aria-hidden="true" tabindex="-1"></a><span class="fu"># Ejercicio de evaluación continua 2: crear y evaluar un modelo con el método [`glm`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) en [`caret`](http://topepo.github.io/caret/).</span></span>
+<span id="cb41-274"><a href="#cb41-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-275"><a href="#cb41-275" aria-hidden="true" tabindex="-1"></a>Sobre los datos de _cancer_, obtén un modelo <span class="co">[</span><span class="ot">`glm`</span><span class="co">](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm)</span> realizando las siguientes tareas:</span>
+<span id="cb41-276"><a href="#cb41-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-277"><a href="#cb41-277" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Divide de nuevo los datos en entrenamiento (80%) y test (20%).</span>
+<span id="cb41-278"><a href="#cb41-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-279"><a href="#cb41-279" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Entrena el modelo usando el método <span class="in">`glm`</span> de <span class="co">[</span><span class="ot">`caret`</span><span class="co">](http://topepo.github.io/caret/)</span> y aplicando validación cruzada con 10 particiones.</span>
+<span id="cb41-280"><a href="#cb41-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-281"><a href="#cb41-281" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Evalúa las predicciones del modelo sobre el conjunto de test.</span>
+<span id="cb41-282"><a href="#cb41-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-283"><a href="#cb41-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ejercicio2}</span></span>
+<span id="cb41-284"><a href="#cb41-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-285"><a href="#cb41-285" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb41-286"><a href="#cb41-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-287"><a href="#cb41-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
