@@ -100,7 +100,7 @@ ggplot(data = iris_data) +
 Normalizamos los datos para el cálculo de distancias con [`preProcess`](https://rdrr.io/rforge/caret/man/preProcess.html) .
 
 ```{r normalizar}
-sobj <- preProcess(iris_data[,1:4], method=c("scale"))
+sobj <- preProcess(iris_data[1:4], method=c("scale"))
 iris_scaled <- predict(sobj, iris_data[1:4]) %>% mutate(Species = iris_data$Species)
 ```
 
