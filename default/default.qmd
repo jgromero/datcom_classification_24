@@ -1,0 +1,328 @@
+---
+title: "Clasificación con el conjunto de datos Credit Card Default"
+author: "Juan Gómez Romero"
+date: "10/15/2023"
+lang: es
+format:
+  html:
+    code-tools: true
+    code-fold: true
+    df-print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+
+library(knitr)
+library(tidyverse)
+library(caret)
+library(ISLR2)
+library(ggthemes)
+library(hrbrthemes)
+library(class)
+```
+
+Clasificación con el conjunto de datos [default](https://rdocumentation.org/packages/ISLR2/versions/1.3-2/topics/Default).
+
+> El conjunto de datos *Credit Card Default Data* o conjunto de datos *default* es un conjunto de datos multivariante introducido en el libro [*An Introduction to Statistical Learning*](https://www.statlearning.com). Incluye datos de 3 variables de 10.000 clientes (`student`, `balance`, `income`), para los que se busca predecir la probabilidad de `default` (impago) en su tarjeta de crédito.
+
+# Lectura de datos
+
+Cargamos el conjunto de datos iris desde [`ISLR2`](https://rdocumentation.org/packages/ISLR2/versions/1.3-2).
+
+```{r lectura}
+default_data <- Default
+default_data
+```
+
+# Análisis exploratorio
+
+## Características
+
+Resumen estadístico básico de los datos: mínimos, máximos, medias, medianas, cuartiles, etc.
+
+```{r resumen}
+summary(default_data)
+```
+
+Los cuartiles se pueden ver gráficamente también, por ejemplo para `balance`.
+
+```{r cuartiles}
+boxplot(default_data$balance ~ default_data$default)
+```
+
+## Diagramas
+
+### Boxplot
+
+```{r boxplots}
+plot_data <- default_data %>% 
+  pivot_longer(cols = c("balance", "income"))
+
+ggplot(data = plot_data) + 
+  geom_boxplot(aes(x=default, y=value)) + 
+  theme(axis.text.x = element_text(angle = 90)) +
+  facet_wrap(~name, scales = "free") +
+  theme_ipsum_rc()
+```
+
+```{r boxplots_student}
+plot_data <- default_data %>% 
+  pivot_longer(cols = c("balance", "income"))
+
+ggplot(data = plot_data) + 
+  geom_boxplot(aes(x=default, y=value)) + 
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "By student") +
+  theme_ipsum_rc() +
+  facet_wrap(~name + student, scales = "free")
+```
+
+### Histograma
+
+```{r histograma}
+ggplot(data = default_data) + 
+  geom_histogram(aes(x = balance, fill = default), bins = 20, 
+                 color = "white") +
+  scale_fill_ipsum(name ="Impago", labels=c("No", "Sí")) +
+  scale_color_ipsum(name ="Impago", labels=c("No", "Sí")) +
+  theme_ipsum_rc()
+```
+
+### Densidad
+
+```{r densidad}
+ggplot(data = default_data) + 
+  geom_density(aes(x = balance, fill = default, color = default)) +
+  scale_fill_ipsum(name ="Impago", labels=c("No", "Sí")) +
+  scale_color_ipsum(name ="Impago", labels=c("No", "Sí")) +
+  theme_ipsum_rc()
+```
+
+### Dispersión
+
+```{r dispersion}
+ggplot(data = default_data) + 
+  geom_point(aes(x = balance, y = income, color = default), size = 1)  +
+  scale_color_ipsum() +
+  scale_shape_cleveland() +
+  theme_ipsum_rc()
+```
+
+```{r dispersion_student}
+ggplot(data = default_data) + 
+  geom_point(aes(x = balance, y = income, color = default), size = 1)  +
+  scale_color_ipsum() +
+  scale_shape_cleveland() +
+  theme_ipsum_rc() +
+  labs(title = "By student") +
+  facet_wrap(~ student)
+```
+
+# Preprocesamiento
+
+Binarizamos la variable categórica `student` con [`dummyVars`](https://rdrr.io/cran/caret/man/dummyVars.html). La biblioteca [`dummies`](https://rdrr.io/cran/caret/man/dummyVars.html) no está disponible en CRAN.
+
+```{r binarizar}
+dobj <- dummyVars(~., default_data[c('student')])
+default_binarized <- predict(dobj, default_data) 
+```
+
+Normalizamos los datos para el cálculo de distancias con [`preProcess`](https://rdrr.io/rforge/caret/man/preProcess.html) .
+
+```{r normalizar}
+sobj <- preProcess(default_data[c('balance', 'income')], method=c("scale"))
+default_scaled <- predict(sobj, default_data[c('balance', 'income')])
+```
+
+Componemos el `tibble` con los datos proprocesados.
+
+```{r componer}
+default_prep <- default_data %>%
+  select(-student) %>%
+  mutate(student.no  = default_binarized[1]) %>%
+  mutate(student.yes = default_binarized[2]) %>%
+  mutate(balance = default_scaled$balance) %>%
+  mutate(income  = default_scaled$income) %>%
+  relocate(balance, .after = last_col()) %>%
+  relocate(income,  .after = last_col())
+```
+
+# Particionamiento de datos
+
+Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando [`createDataPartition`](https://rdrr.io/rforge/caret/man/createDataPartition.html) de [`caret`](http://topepo.github.io/caret/).
+
+Crearemos dos particionamientos, uno con los datos preprocesados (binarizados y normalizados) y otro con los datos sin preprocesar.
+
+```{r particionamiento}
+set.seed(0)
+
+trainIndex <- createDataPartition(default_prep$default, p = .50, list = FALSE)
+train <- default_prep[trainIndex, ] 
+val   <- default_prep[-trainIndex, ]
+
+trainIndex <- createDataPartition(default_prep$default, p = .80, list = FALSE)
+train_noPre <- default_data[trainIndex, ]
+val_noPre   <- default_data[-trainIndex, ]
+```
+
+# Clasificación con k-NN
+
+## Predicción
+
+Podemos aplicar k-NN para clasificar los datos de validación a partir de las instancias de entrenamiento.
+
+```{r knn}
+knn.pred <- knn(train[2:5], val[2:5], train$default, k = 5)
+```
+
+## Análisis y validación
+
+Calculadas las predicciones de los datos de validación, podemos comprobar los aciertos.
+
+```{r validacion}
+cm <- table(knn.pred, val$default)
+cm
+```
+
+Y calcular una tasa de acierto.
+
+```{r acierto}
+val_acc_rate <- sum(diag(cm)) / nrow(val)
+
+print(paste0("% de acierto en validación: ", round(val_acc_rate, 3) * 100))
+```
+
+# Clasificación con regresión lineal
+
+## Entrenamiento
+
+Creamos un modelo de regresión lineal univariado usando `balance` como predictor.
+
+```{r lm}
+model_lm <- lm(default~balance, data = train_noPre %>% mutate(default=as.numeric(default)-1))
+summary(model_lm)
+
+lm.pred.train <- predict(model_lm, select(train_noPre, balance), type = "response")
+lm.pred.val   <- predict(model_lm, select(val_noPre, balance), type = "response")
+```
+
+## Análisis y validación
+
+Podemos visualizar las predicciones respecto a los valores reales de los conjuntos de entrenamiento y validación.
+
+```{r lm_plot_train}
+plot_data <-
+  tibble(balance = train_noPre$balance) %>%
+  mutate(default.real = as.numeric(train_noPre$default)-1) %>%
+  mutate(prediction.lm = lm.pred.train) %>%
+  pivot_longer(cols = -balance)
+  
+ggplot(data = plot_data) +
+  geom_point(aes(x = balance, y = value, color = name)) +
+  labs(x = "balance", y = "Probability of Default") +
+  scale_color_few(name = "", labels=c("Real", "Prediction LM")) +
+  labs(title = "LM: default vs balance - train") +
+  theme_ipsum_rc() 
+```
+
+```{r lm_plot_val}
+plot_data <-
+  tibble(balance = val_noPre$balance) %>%
+  mutate(default.real = as.numeric(val_noPre$default)-1) %>%
+  mutate(prediction.lm = lm.pred.val) %>%
+  pivot_longer(cols = -balance)
+  
+ggplot(data = plot_data) +
+  geom_point(aes(x = balance, y = value, color = name)) +
+  labs(x = "balance", y = "Probability of Default") +
+  scale_color_few(name = "", labels=c("Real", "Prediction LM")) +
+  labs(title = "LM: default vs balance - validation") +
+  theme_ipsum_rc()
+```
+
+Si establecemos un umbral de probabilidad para distinguir entre una y otra clase (por ejemplo, 0.2), podemos calcular el acierto conseguido.
+
+```{r validacion_lm}
+lm.pred.val.category <- ifelse(lm.pred.val > 0.2, "Yes", "No")
+
+cm <- table(lm.pred.val.category, val_noPre$default)
+cm
+
+print(paste0("% de acierto en validación: ", round(sum(diag(cm)) / nrow(val_noPre), 3) * 100))
+```
+
+# Clasificación con regresión logística
+
+## X = `balance`
+
+### Entrenamiento
+
+Creamos un modelo de regresión logística univariado usando `balance` como predictor. Al tratarse de clasificación binaria, debemos especificar `family=binomial`. (Para más clases, `family=multinomial`).
+
+```{r logr}
+model_logr <- glm(default~balance, family=binomial, data = train_noPre)
+summary(model_logr)
+
+logr.pred.train <- predict(model_logr, select(train_noPre, balance), type = "response")
+logr.pred.val   <- predict(model_logr, select(val_noPre, balance), type = "response")
+```
+### Análisis y validación
+```{r logr_plot_train}
+plot_data <-
+  tibble(balance = train_noPre$balance) %>%
+  mutate(default.real = as.numeric(train_noPre$default)-1) %>%
+  mutate(prediction.logr = logr.pred.train) %>%
+  pivot_longer(cols = -balance)
+  
+ggplot(data = plot_data) +
+  geom_point(aes(x = balance, y = value, color = name)) +
+  labs(x = "balance", y = "Probability of Default") +
+  scale_color_few(name = "", labels=c("Real", "Prediction LogR")) +
+  labs(title = "LogR: default vs balance - train") +
+  theme_ipsum_rc() 
+```
+
+Si establecemos un umbral de probabilidad para distinguir entre una y otra clase (por ejemplo, 0.5), podemos calcular el acierto conseguido.
+
+```{r validacion_logr}
+logr.pred.val.category <- ifelse(logr.pred.val > 0.5, "Yes", "No")
+
+cm <- table(logr.pred.val.category, val_noPre$default)
+cm
+
+print(paste0("% de acierto en validación: ", round(sum(diag(cm)) / nrow(val_noPre), 3) * 100))
+```
+
+## X = `student`
+
+```{r logr_student}
+model_logr <- glm(default~student, family=binomial, data = train_noPre)
+summary(model_logr)
+
+logr.pred.train <- predict(model_logr, select(train_noPre, student), type = "response")
+logr.pred.val   <- predict(model_logr, select(val_noPre, student), type = "response")
+
+logr.pred.val.category <- ifelse(logr.pred.val > 0.5, "Yes", "No")
+
+cm <- table(logr.pred.val.category, val_noPre$default)
+cm
+
+print(paste0("% de acierto en validación: ", round(sum(diag(cm)) / nrow(val_noPre), 3) * 100))
+```
+
+## X = `balance`+ `student` + `income`
+```{r logr_all}
+model_logr <- glm(default~., family=binomial, data = train_noPre)
+summary(model_logr)
+
+logr.pred.train <- predict(model_logr, train_noPre, type = "response")
+logr.pred.val   <- predict(model_logr, val_noPre, type = "response")
+
+logr.pred.val.category <- ifelse(logr.pred.val > 0.5, "Yes", "No")
+
+cm <- table(logr.pred.val.category, val_noPre$default)
+cm
+
+print(paste0("% de acierto en validación: ", round(sum(diag(cm)) / nrow(val_noPre), 3) * 100))
+```
