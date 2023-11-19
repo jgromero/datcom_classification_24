@@ -24,6 +24,9 @@ library(tidyverse)
 library(datasets)
 library(caret)
 library(class)
+library(hrbrthemes)
+library(MASS)
+library(GGally)
 ```
 
 Clasificación con el conjunto de datos [iris](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/iris).
@@ -69,7 +72,7 @@ ggplot(data = iris_data) +
 
 ## Densidad
 
-La función de densidad es una versión suavizada del histograma, útil para datos continuos. 
+La función de densidad es una versión suavizada del histograma, útil para datos continuos.
 
 ```{r densidad}
 ggplot(data = iris_data) + 
@@ -93,6 +96,12 @@ ggplot(data = iris_data) +
   scale_shape_discrete(name ="Especie", labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica"))
 ```
 
+Con [ggpairs](https://www.rdocumentation.org/packages/GGally/versions/1.5.0/topics/ggpairs) podemos mostrar varios gráficos y métricas: correlación entre variables numéricas, densidades y diagramas de dispersión.
+
+```{r pares}
+ggpairs(iris_data, columns = 1:4, aes(color = Species, alpha = 0.5))
+```
+
 # Clasificación con k-NN
 
 ## Preprocesamiento
@@ -108,7 +117,7 @@ iris_scaled <- predict(sobj, iris_data[1:4]) %>% mutate(Species = iris_data$Spec
 
 Separamos las instancias que se usarán como *entrenamiento* de los individuos de validación usando [`createDataPartition`](https://rdrr.io/rforge/caret/man/createDataPartition.html) de [`caret`](http://topepo.github.io/caret/).
 
-```{r particionamiento}
+```{r particionamiento_knn}
 set.seed(0)
 
 trainIndex <- createDataPartition(iris_scaled$Species, p = .50, list = FALSE)
@@ -146,13 +155,193 @@ Podemos marcar sobre el gráfico de `Petal.Lenght` vs `Petal.Width` los valores 
 plot_data <- val %>% 
   mutate(prediction = knn.pred) %>%
   rename(known = Species) %>%
-  gather(type, value, prediction, known) %>%
-  mutate(id = row_number())
-
+  pivot_longer(c("prediction", "known"))
+  
 ggplot(data = plot_data) + 
-  geom_point(aes(x = .data[[params$comparar_x]], y = .data[[params$comparar_y]], shape = type, color = value))  +
+  geom_point(aes(x = .data[[params$comparar_x]], y = .data[[params$comparar_y]], shape = name, color = value))  +
   labs(x = params$comparar_x, y = params$comparar_y) +
-  scale_colour_manual(values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
-  scale_shape_manual(values=c(5, 3))
+  scale_colour_manual(name = "Species", values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
+  scale_shape_manual(name = "Type", values=c(5, 3))
 ```
 
+# Clasificación con LDA
+
+## Preprocesamiento
+
+El primer paso con LDA es comprobar las hipótesis de partida. Más en detalle:
+
+-- Que las observaciones siguen una distribución normal para cada predictor.
+
+```{r lda_hipotesis_normal}
+plot_data <- iris_data %>%
+  pivot_longer(-Species)
+
+ggplot(data = plot_data) +
+  geom_density(aes(x=value, fill=name)) + 
+  facet_wrap(~ Species + name, scales = "free") +
+  labs(title = "Density functions for each predictor and target value") +
+  scale_fill_ipsum(name ="Predictor") +
+  theme_ipsum_rc()
+```
+
+Cuantitativamente, podemos realizar el test de normalidad de Shapiro-Wilk con [`shapiro.test`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/shapiro.test).
+
+```{r lda_shapiro}
+my_shapiro <- function(a) {
+  shapiro.test(a)$statistic
+}
+
+iris_data %>%
+  group_by(Species) %>%
+  summarise(across(Sepal.Length:Petal.Width, my_shapiro))
+```
+
+-- Que las matrices de varianza-covarianza son homogéneas.
+
+```{r lda_hipotesis_homogen}
+plot_data <- iris_data %>% 
+  pivot_longer(-Species)
+
+ggplot(plot_data) +
+       geom_boxplot(aes(x=name, y=value, fill=Species)) +
+       labs(title = "Boxplots for each predictor and target value") +
+       scale_fill_ipsum(name ="Species") +
+       theme_ipsum_rc()
+```
+
+Cuantitativamente, podemos calcular las matrices de covarianza o aplicar el test de Bartlett con [`bartlett.test`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/bartlett.test).
+
+```{r lda_bartlett}
+iris_data %>%
+  group_by(Species) %>%
+  group_map(~var(.x))
+
+bartlett.test(Sepal.Length ~ Species, iris_data)
+bartlett.test(Sepal.Width  ~ Species, iris_data)
+bartlett.test(Petal.Length ~ Species, iris_data)
+bartlett.test(Petal.Width  ~ Species, iris_data)
+```
+
+## Particionamiento de datos
+
+```{r particionamiento_lda}
+set.seed(0)
+
+trainIndex <- createDataPartition(iris_scaled$Species, p = .50, list = FALSE)
+train <- iris_data[trainIndex, ] 
+val   <- iris_data[-trainIndex, ]
+```
+
+## Predicción con LDA
+
+Podemos crear el modelo LDA para clasificar los datos de validación a partir de las instancias de entrenamiento.
+
+```{r lda_modelo}
+model.lda <- lda(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, data = train)
+model.lda
+
+lda.pred.train <- predict(model.lda, train[1:4])
+lda.pred.val <- predict(model.lda, val[1:4])
+```
+
+Observar la transformación de los datos usados para crear el modelo.
+
+```{r lda_transformacion}
+plot_data <- lda.pred.train$x %>%
+  as_tibble() %>%
+  mutate(Species = train[[5]])
+
+ggplot(data = plot_data) + 
+  geom_point(aes(x = LD1, y = LD2, color = Species))  +
+  scale_colour_manual(name = "Species", values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) %>%
+  labs(title = "Data transformed after LDA") +
+  theme_ipsum_rc()
+```
+
+
+## Analisis y validación
+
+Finalmente, podemos calcular las métricas en validación.
+
+```{r lda_metricas}
+(t <- table(lda.pred.val$class, val$Species))
+
+val_acc_rate <- sum(diag(t)) / nrow(val)
+
+print(paste0("% de acierto en validación: ", val_acc_rate))
+```
+
+Y visualizar las predicciones, tanto con los datos de entrenamiento como los de validación.
+
+```{r lda_prediccion_train}
+plot_data <- lda.pred.train$x %>%
+  as_tibble() %>%
+  mutate(known = train[[5]]) %>%
+  mutate(prediction = lda.pred.train$class) %>%
+  pivot_longer(c("prediction", "known"))
+  
+ggplot(data = plot_data) + 
+  geom_point(aes(x = LD1, y = LD2, shape = name, color = value))  +
+  scale_colour_manual(name = "Species", values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
+  scale_shape_manual(name = "Type", values=c(5, 3)) +
+  labs(title = "Train data + predictions transformed after LDA") +
+  theme_ipsum_rc()
+```
+
+```{r lda_prediccion_val}
+plot_data <- lda.pred.val$x %>%
+  as_tibble() %>%
+  mutate(known = val[[5]]) %>%
+  mutate(prediction = lda.pred.val$class) %>%
+  pivot_longer(c("prediction", "known"))
+  
+ggplot(data = plot_data) + 
+  geom_point(aes(x = LD1, y = LD2, shape = name, color = value))  +
+  scale_colour_manual(name = "Species", values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
+  scale_shape_manual(name = "Type", values=c(5, 3)) +
+  labs(title = "Validation data + predictions transformed after LDA") +
+  theme_ipsum_rc()
+```
+
+# Clasificación con QDA
+
+Por último, creamos un clasificador con QDA usando el método [`qda`](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.3/topics/qda) de [`MASS`](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.3).
+
+```{r qda}
+model.qda <- qda(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, data = train)
+
+qda.pred.train <- predict(model.qda, train[1:4])
+qda.pred.val <- predict(model.qda, val[1:4])
+
+(t <- table(qda.pred.val$class, val$Species))
+
+val_acc_rate <- sum(diag(t)) / nrow(val)
+
+print(paste0("% de acierto en validación: ", val_acc_rate))
+```
+
+# LDA y QDA en `caret`
+
+```{r lda_qda_caret}
+suppressWarnings({
+  lda.model <- train(train[1:4],
+                    train$Species,
+                    method="lda", 
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10,
+                    trControl = trainControl(method = "cv"))
+})
+
+lda.model
+
+suppressWarnings({
+  qda.model <- train(train[1:4],
+                    train$Species,
+                    method="qda", 
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10,
+                    trControl = trainControl(method = "cv"))
+})
+
+qda.model
+```

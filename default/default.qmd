@@ -62,7 +62,7 @@ plot_data <- default_data %>%
 ggplot(data = plot_data) + 
   geom_boxplot(aes(x=default, y=value)) + 
   theme(axis.text.x = element_text(angle = 90)) +
-  facet_wrap(~name, scales = "free") +
+  facet_wrap(~name, scales =  "free") +
   theme_ipsum_rc()
 ```
 
