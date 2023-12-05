@@ -11,7 +11,6 @@ format:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE)
-
 library(knitr)
 library(tidyverse)
 library(caret)
@@ -37,7 +36,7 @@ Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.
 ```{r preprocesamiento}
 cancer_data <- cancer_raw %>% 
   mutate(diagnosis = as.factor(diagnosis)) %>%
-  select(-c('id')) %>%
+  select(-id) %>%
   drop_na()
 cancer_data
 ```
@@ -203,6 +202,14 @@ ggplot(data = plot_data) +
   scale_colour_manual(values=c("red", "green")) + 
   scale_shape_manual(values=c(5, 3))
 ```
+
+Cuantitativamente, podemos obtener la matriz de confusión con [`confusionMatrix`](https://rdrr.io/rforge/caret/man/confusionMatrix.html) de [`caret`](http://topepo.github.io/caret/), que calcula varias métricas y tests sobre los resultados de validación.
+
+```{r validacion_plot_cm}
+cm <- confusionMatrix(knn.pred, val$diagnosis)
+cm
+```
+
 ### Modificando _k_
 
 Podemos hacer alguna prueba manual variando los valores de `k`.
