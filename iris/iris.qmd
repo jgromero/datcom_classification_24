@@ -151,7 +151,7 @@ print(paste0("% de acierto en validación: ", val_acc_rate))
 
 Podemos marcar sobre el gráfico de `Petal.Lenght` vs `Petal.Width` los valores conocidos y las predicciones.
 
-```{r}
+```{r validacion_plot}
 plot_data <- val %>% 
   mutate(prediction = knn.pred) %>%
   rename(known = Species) %>%
@@ -163,6 +163,7 @@ ggplot(data = plot_data) +
   scale_colour_manual(name = "Species", values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
   scale_shape_manual(name = "Type", values=c(5, 3))
 ```
+
 
 # Clasificación con LDA
 
