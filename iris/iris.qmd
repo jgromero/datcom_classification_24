@@ -1,12 +1,20 @@
 ---
 title: "Clasificación con el conjunto de datos Iris"
 author: "Juan Gómez Romero"
-date: "10/15/2023"
+date: "10/24/2024"
 lang: es
 format:
   html:
     code-tools: true
     code-fold: true
+    toc: true
+    number-sections: true
+    css: styles.css
+    df-print: paged
+    code-links:
+      - text: datcom-classification
+        icon: github
+        href: https://github.com/jgromero/datcom_classification_24 
 params:
   n_bins:
     value: 10
@@ -161,7 +169,9 @@ ggplot(data = plot_data) +
   geom_point(aes(x = .data[[params$comparar_x]], y = .data[[params$comparar_y]], shape = name, color = value))  +
   labs(x = params$comparar_x, y = params$comparar_y) +
   scale_colour_manual(name = "Species", values=c("red", "green", "blue"), labels=c("Iris Setosa", "Iris Versicolor", "Iris Virginica")) + 
-  scale_shape_manual(name = "Type", values=c(5, 3))
+  scale_shape_manual(name = "Type", values=c(5, 3)) +
+  theme_ipsum_rc()
+
 ```
 
 

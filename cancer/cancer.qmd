@@ -1,11 +1,20 @@
 ---
 title: "Clasificación con el conjunto de datos Breast Cancer"
 author: "Juan Gómez Romero"
+date: "10/24/2024"
 lang: es
 format:
   html:
     code-tools: true
     code-fold: true
+    toc: true
+    number-sections: true
+    css: styles.css
+    df-print: paged
+    code-links:
+      - text: datcom-classification
+        icon: github
+        href: https://github.com/jgromero/datcom_classification_24 
 ---
 
 ```{r setup, include=FALSE}
@@ -28,6 +37,7 @@ Cargamos el conjunto de datos desde [`cancer_dataset.csv`](https://www.kaggle.co
 
 ```{r lectura}
 cancer_raw  <- read_csv('cancer_dataset.csv')
+cancer_raw
 ```
 
 Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.
@@ -35,7 +45,7 @@ Transformamos los datos, seleccionamos columnas y eliminamos filas con _na_.
 ```{r preprocesamiento}
 cancer_data <- cancer_raw %>% 
   mutate(diagnosis = as.factor(diagnosis)) %>%
-  select(-id) %>%
+  dplyr::select(-id) %>%
   drop_na()
 cancer_data
 ```
@@ -228,7 +238,7 @@ Alternativamente, podemos usar [`caret`](http://topepo.github.io/caret/) y [`tra
 
 ```{r knn_caret}
 suppressWarnings({
-  knn.model <- train(select(train, -diagnosis),  # same as: train[2:31] 
+  knn.model <- train(dplyr::select(train, -diagnosis),  # same as: train[2:31] 
                     train$diagnosis,
                     method="knn", 
                     metric="Accuracy", 
@@ -238,7 +248,7 @@ suppressWarnings({
 knn.model
 ```
 ```{r knn_caret_val}
-knn.pred.caret <- predict(knn.model, newdata = val %>% select(-diagnosis))
+knn.pred.caret <- predict(knn.model, newdata = val %>% dplyr::select(-diagnosis))
 
 (t <- table(knn.pred.caret, val$diagnosis))
 
