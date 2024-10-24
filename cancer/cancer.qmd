@@ -1,7 +1,6 @@
 ---
 title: "Clasificación con el conjunto de datos Breast Cancer"
 author: "Juan Gómez Romero"
-date: "10/15/2023"
 lang: es
 format:
   html:
